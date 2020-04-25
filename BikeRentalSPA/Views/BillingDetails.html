@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-ng-app="MyApp">
+    <head>
+        <title></title>
+        <script src="Scripts/angular.min.js"></script>
+        <script type="text/javascript"></script>
+        <script src="code.js"></script>
+        <link href="Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="../Content/homepage.css" rel="stylesheet" />
+        <style>
+            #bgsuccess {
+                background-color:lightskyblue;
+            }
+            #bgsuccess1 {
+                background-color:lightseagreen;
+            }
+            
+        </style>
+    </head>
+<body>
+   
+  
+       <div class="row" >
+            <div class="col-lg-8 col-lg-8 col-lg-4" ng-repeat="activeBk in activeBk" >
+        <div class="thumbnail">
+             <img src="data:image/gif;base64,{{activeBk.Bike_Image}}" alt="Base64 encoded image">
+             <div class="caption">
+                              
+                <h5><a href  ><b>{{activeBk.Brand}}</b></a></h5>
+                                
+                <p ><b>Class: </b>{{activeBk.Class}} </p>
+                <p  ><b>Price- </b>{{activeBk.Rental_Price}}$ /day</p>
+                <button type="button" class="btn btn-danger" ng-click="deleteItem($index)">Delete</button>
+                 <button  type="button" class="btn btn-danger" ng-click="bookNow($index)">Book</button>
+                 
+                   </div>             
+             </div>
+        </div>
+          <!-- <div class="clearfix"></div>-->
+           
+           </div>
+   <form name="billingform"  novalidate>  
+
+    <div class="form-group">
+        <label>Email</label>
+        <input class="form-control" value="{{userEmail}}" readonly/>     
+    </div>
+    <div class="form-group">
+        <label>Model No</label>        
+        <input class="form-control" type="text" id="modelNo" name="modelNo" value="{{book.Model_No}}" readonly />  
+    </div>
+    <div class="form-group">
+        <label>Brand</label>        
+        <input class="form-control" type="text" id="brand" name="brand" value="{{book.Brand}}" readonly />  
+    </div>
+       
+    <div class="form-group">
+        <label>Rental Price /day ($)</label>
+        <input type="text"  id="activeRentalPrice"  name="activeRentalPrice" value="{{book.Rental_Price}}" readonly /> 
+         
+    </div>
+
+
+    <div class="form-group" ng-class="{ 'has-error' : billingform.firstname.$invalid && !billingform.firstname.$pristine }">
+        <label>First Name</label>
+        <input type="text" name="firstname"  ng-model="firstName" class="form-control" placeholder="Enter your first name" required/>
+        <p ng-show="billingform.firstname.$invalid && !billingform.firstname.$pristine" class="help-block">You first name is required.</p>
+    </div>
+
+
+    <div class="form-group" ng-class="{ 'has-error' : billingform.lastname.$invalid && !billingform.lastname.$pristine }">
+        <label>Last Name</label>
+        <input type="text" name="lastname" ng-model="lastName" class="form-control" placeholder="Enter your last name" required/>
+        <p ng-show="billingform.lastname.$invalid && !billingform.lastname.$pristine" class="help-block">You last name is required.</p>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': billingform.phone.$error.number}">
+        <label>Contact Number</label>
+        <input type="number" name="phone" ng-model="contactNo" ng-minlength="10" 
+             ng-maxlength="10" class="form-control" placeholder="Enter your phone number" required />
+        <span class="help-block" ng-show="billingform.phone.$error.required || billingform.phone.$error.number">Valid phone number is required</span>
+        <span class="help-block" ng-show="((billingform.phone.$error.minlength ||billingform.phone.$error.maxlength) &&
+                  billingform.phone.$dirty) ">phone number should be 10 digits</span>
+    </div>                       
+                                                      
+    <div class="form-group" ng-class="{'has-error':billingform.fromdate.$error.date}">
+        <label>From Date</label>
+        <input name="fromdate" type="date" ng-model="fromDate" placeholder="yyyy-mm-dd" ng-min="{{today}}" required />
+        <span ng-show="billingform.fromdate.$dirty && billingform.fromdate.$invalid">
+        <span ng-show="billingform.fromdate.$error.required">From Date is required</span>
+        <span ng-show="billingform.fromdate.$error.min">From Date should not be less than current date</span>
+
+    </div>
+
+    <div class="form-group" ng-class="{'has-error':billingform.enddate.$error.date}">
+        <label>End Date</label>
+        <input name="enddate" type="date" ng-model="endDate" placeholder="yyyy-mm-dd" min="{{fromDate}}" required />
+        <span ng-show="billingform.enddate.$dirty && billingform.enddate.$invalid">
+        <span ng-show="billingform.enddate.$error.required">End Date is required</span>
+        <span ng-show="billingform.enddate.$error.min">End Date should not be less than From Date</span>
+
+    </div>
+    <button type="button" data-target="#MyPaymentDialog" data-toggle="modal"  ng-click="ProceedToPay()" class="btn btn-primary" ng-disabled="billingform.$invalid"  >Proceed to Pay</button>
+ 
+   
+     </form>  
+     <div id="MyPaymentDialog" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+                   <div class="modal-content">
+                        <div class="modal-header"><b>Payment Confirmation</b></div>
+                        <div class="modal-body">  
+                            <label for="Rentalfee">Total Rental price for {{diff}} day(s) = </label>
+                            <input type="text" value="{{totalRentalFee}} $" readonly />
+                            </div>
+                       <div class="modal-footer">
+                        <button type="button" data-target="#MyConfirmDialog" data-toggle="modal" class="btn-btn primary" ng-click="AddBill()" data-dismiss="modal"><b>Confirm Pay</b></button>
+                       <button type="button"  class="btn-btn danger" data-dismiss="modal">Cancel Payment</button> 
+                       </div>
+                       </div>
+                 </div>
+         </div>   
+    <div id="MyConfirmDialog" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+                   <div class="modal-content">
+                        <div class="modal-header"></div>
+                        <div  class="modal-body">  
+                            <h3><p id="bgsuccess1">Payment Successful - for the item</p><p id="bgsuccess"> "{{book.Brand}}" </p></h3><br />
+                            <h4>Thank you for choosing <b>Bull-Riders.</b> Have a great riding...</h4>
+                            </div>
+                       <div class="modal-footer">
+                        <button type="button" ng-click="clearbooked()" class="btn-btn danger" data-dismiss="modal">Close</button> 
+                        </div>
+                       </div>
+                 </div>
+         </div>  
+     
+</body>
+    </html>

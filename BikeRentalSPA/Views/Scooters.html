@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <title></title>
+        <link href="Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="../Content/homepage.css" rel="stylesheet" />
+
+
+        <style>
+        #bgmodal {
+                background-color:rosybrown;
+            }     
+        #bgstyle {
+            background-color:lightcyan;
+        }
+        #bgcolor{
+            background-color:lightgray;
+        }
+        #btcolor{
+            background-color:deepskyblue;
+        }
+    </style>
+        </head>
+    <body>
+    <div class="container">
+        <div class="col-md-9">
+
+                <div class="row carousel-holder">
+
+                    <div class="col-md-12">
+                        <div id="carousel-example-generic" class="carousel slide span12" style="width:900px" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner" role="listbox">
+                                <div class="item active">
+                                    <img class="slide-image" src=images\S1.jpg alt="">
+                                </div>
+                                <div class="item">
+                                    <img class="slide-image" src=images\S2.jpg alt="">
+                                </div>
+                                <div class="item">
+                                    <img class="slide-image" src=images\S3.jpg alt="">
+                                </div>
+                            </div>
+                            <a class="left carousel-control" role="button" ng-href data-target="#carousel-example-generic" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                                <!--<span class="sr-only">Previous</span>-->
+                            </a>
+                            <a class="right carousel-control" role="button" ng-href data-target="#carousel-example-generic" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                                <!--<span class="sr-only">Next</span>-->
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="a in SciD">
+                        <div class="thumbnail">
+                            <img src="data:image/gif;base64,{{a.Bike_Image}}" alt="Base64 encoded image">
+                            <div class="caption">
+                              
+                                <h5><a href data-target="#MyItemDialog" data-toggle="modal" ng-click="getParticularRecord($index)"><b>{{a.Brand}}</b></a>
+                                </h5>
+                                <p><b>Class: </b>{{a.Class}} </p>
+                                <p> <b>Price- </b>{{a.Rental_Price}}$ /day</p>
+                                
+                                <!--<input class="center-block" type="submit" id="book" data-toggle="modal" data-target="#MyBookDialog" value="Book Now" style="background-color:orange; margin-bottom:0px" />-->
+                                <button type="button" class="btn btn-danger" ng-click="checkSLogin($index)">Book now</button>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+        </div>
+       </div>
+        <div id="MyItemDialog" class="modal fade bs-example-modal-lg" role="dialog" aria-labelledby="myLargeModalLabel">
+             <div class="modal-dialog modal-lg" role="document">
+                   <div class="modal-content">
+                        <div id="bgmodal" class="modal-header"><h3>Technical Details</h3></div>
+                        <div class="modal-body">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Model No</th>
+                                        <th>Brand</th>
+                                        <th>Class</th>                                     
+                                        <th>Color</th>
+                                        <th>Engine</th>
+                                        <th>Displacement</th>
+                                        <th>Fuel Capacity</th>
+                                        <th>Fuel Economy</th>
+                                        <th>Rental Price</th>
+                                    </tr>
+                                </thead>
+                            <tr>
+                                <td>{{activeRecord.Model_No}}</td>
+                                <td>{{activeRecord.Brand}}</td>
+                                <td>{{activeRecord.Class}}</td>                            
+                                <td>{{activeRecord.Color}}</td>
+                                <td>{{activeRecord.Engine}}</td>
+                                <td>{{activeRecord.Displacement}}</td>
+                                <td>{{activeRecord.Fuel_Capacity}}</td>
+                                <td>{{activeRecord.Fuel_Economy}}</td>
+                                <td>{{activeRecord.Rental_Price}}$ /day</td>
+                            </tr>
+                           </table>
+                            
+                        </div>
+                        <div id="bgmodal" class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                   </div>
+
+             </div>
+        </div>
+            
+
+        </div>
+        </body>
+    </html>
